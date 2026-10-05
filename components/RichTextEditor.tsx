@@ -1,6 +1,7 @@
 "use client";
 
 import { EditorContent, useEditor } from "@tiptap/react";
+import { useEffect } from "react";
 import StarterKit from "@tiptap/starter-kit";
 
 type RichTextEditorProps = {
@@ -35,6 +36,18 @@ export default function RichTextEditor({
       onChange(editor.getHTML());
     },
   });
+
+useEffect(() => {
+  if (!editor) return;
+
+  const currentContent = editor.getHTML();
+
+  if (currentContent !== content) {
+    editor.commands.setContent(content, {
+      emitUpdate: false,
+    });
+  }
+}, [content, editor]);
 
   if (!editor) {
     return null;
